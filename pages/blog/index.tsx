@@ -32,6 +32,27 @@ Blog.defaultProps = {
   posts: [],
 }
 
+export function getStaticProps() {
+  const cmsPosts = postsFromCMS.published.map((post) => {
+    const { data } = matter(post)
+    return data
+  })
+
+  const postsPath = path.join(process.cwd(), 'posts')
+  const filenames = fs.readdirSync(postsPath)
+  const filePosts = filenames.map((name) => {
+    const fullpath = path.join(process.cwd(), 'posts', name)
+    const file = fs.readFileSync(fullpath)
+    const { data } = matter(file)
+    return data
+  })
+  const posts = [...cmsPosts, ...filePosts]
+  return {
+    props: {
+      posts,
+    },
+  }
+}
 export default Blog
 
 /**
