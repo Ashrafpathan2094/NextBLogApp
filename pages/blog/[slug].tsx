@@ -13,7 +13,6 @@ import { posts } from '../../content'
 import renderToString from 'next-mdx-remote/render-to-string'
 
 const BlogPost: FC<Post> = ({ source, frontMatter }) => {
-  console.log('source', source)
   const content = hydrate(source)
   const router = useRouter()
 
