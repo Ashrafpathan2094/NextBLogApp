@@ -1,10 +1,26 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Pane, majorScale, Text } from 'evergreen-ui'
 import Logo from '../components/logo'
+import { signIn, useSession } from 'next-auth/client'
+import { useRouter } from 'next/router'
 
 import SocialButton from '../components/socialButton'
 
 const Signin = () => {
+  const [session, loading] = useSession()
+
+  const router = useRouter()
+  useEffect(() => {
+    if (session) {
+      router.push('/app')
+    }
+  }, [session, router])
+  
+  // console.log(process.env.NEXT_PUBLIC_GITHUB_SECRET,"secret");
+  // console.log(process.env.NEXT_PUBLIC_GITHUB_ID,"id");
+  // console.log(process.env.NEXT_PUBLIC_JWT_SECRET,"jwt");
+  // console.log(process.env.NEXT_PUBLIC_DATABASE_URL,"database");
+  
   return (
     <Pane height="100vh" width="100vw" display="flex">
       <Pane
@@ -37,7 +53,7 @@ const Signin = () => {
         paddingX={majorScale(7)}
       >
         <Pane width="100%" textAlign="center">
-          <SocialButton type="github" onClick={() => {}} />
+          <SocialButton type="github" onClick={() => signIn('github')} />
         </Pane>
       </Pane>
     </Pane>
